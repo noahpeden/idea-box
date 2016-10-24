@@ -1,5 +1,6 @@
 var $titleInput = $('.title-input')
 var $bodyInput = $('.body-input')
+var $quality = 'swill'
 
 function createIdea() {
   $('.render-idea').prepend(`<li class ='idea-box'>
@@ -11,8 +12,8 @@ function createIdea() {
         </button>
         <button class='upvote'>Up</button>
         <button class='downvote'>Down</button>
-        <div class='quality'>quality:<span class>swill</span> </div>
-  </li>`)
+        <div>quality:<span>${$quality}</span> </div>
+  </li>`);
 };
 
 $('.save-button').on('click', function(){
@@ -24,12 +25,22 @@ $('.save-button').on('click', function(){
 
 $('.render-idea').on('click', '.delete-button', function(){
   $(this).parent('li').remove();
-})
+});
 
 
 
-// $('.upvote').on('click', ){
-//   when we click upvote, we want it to go to plausible then genius, after genius disable upvote
+$('.upvote').on('click', function(){
+  $('span').text('')
+  // var $quality = 'swill';
+  //   if ($quality === 'swill') {
+  //       $quality = 'plausible';
+  //     } else if ($quality === 'plausible') {
+  //       $quality = 'genius';
+  //     } else if ($quality === 'genius') {
+  //       $quality = 'genius';
+  //     }
+});
+//   we want it to go to plausible then genius, after genius disable upvote
 // }
 // //
 // function(){
