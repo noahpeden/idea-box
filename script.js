@@ -9,6 +9,9 @@ function createIdea() {
         </div>
         <button class='delete-button'>delete
         </button>
+        <button class='upvote'>Up</button>
+        <button class='downvote'>Down</button>
+        <div class='quality'>quality:<span>swill </span> </div>
   </li>`)
 };
 
