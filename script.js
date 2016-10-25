@@ -1,19 +1,17 @@
 var $titleInput = $('.title-input')
 var $bodyInput = $('.body-input')
-var $quality = 'swill'
 
 function createIdea() {
-  $('.render-idea').prepend(`<li class ='idea-box'>
-        <div class='title-result'>${$titleInput.val()}
-        </div>
-        <div class='body-result'>${$bodyInput.val()}
-        </div>
+  $('.render-idea').prepend(
+    `<li class ='idea-box'>
+        <h2 class='title-result'>${$titleInput.val()}</h2>
+        <p class='body-result'>${$bodyInput.val()}</p>
+        <p class='quality'>quality: swill</p>
         <button class='delete-button'>delete
         </button>
         <button class='upvote'>Up</button>
         <button class='downvote'>Down</button>
-        <div>quality:<span>${$quality}</span> </div>
-  </li>`);
+      </li>`);
 };
 
 $('.save-button').on('click', function(){
@@ -27,22 +25,21 @@ $('.render-idea').on('click', '.delete-button', function(){
   $(this).parent('li').remove();
 });
 
-
-
-$('.upvote').on('click', function(){
-  $('span').text('')
-  // var $quality = 'swill';
-  //   if ($quality === 'swill') {
-  //       $quality = 'plausible';
-  //     } else if ($quality === 'plausible') {
-  //       $quality = 'genius';
-  //     } else if ($quality === 'genius') {
-  //       $quality = 'genius';
-  //     }
+$('.render-idea').on('click', '.upvote', function(){
+  var $quality = $(this).closest('.idea-box').find('.quality');
+  switch($quality.text()){
+  case 'quality: swill':
+     return $quality.text('quality: plausible');
+  case 'quality: plausible':
+    return $quality.text('quality: genius');
+  }
 });
-//   we want it to go to plausible then genius, after genius disable upvote
-// }
-// //
-// function(){
-//   when we click downvote, it should modify from current quality to plausible or swill, after swill disable downvote
-// }
+$('.render-idea').on('click', '.downvote', function(){
+  var $quality = $(this).closest('.idea-box').find('.quality');
+  switch($quality.text()){
+  case 'quality: genius':
+     return $quality.text('quality: plausible');
+  case 'quality: plausible':
+    return $quality.text('quality: swill');
+  }
+});
