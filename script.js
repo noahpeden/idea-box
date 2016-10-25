@@ -49,7 +49,6 @@ $('.save-button').on('click', function(){
   createIdea(newIdea);
   $titleInput.val('');
   $bodyInput.val('');
-  $('.idea-box').uniqueId();
 });
 
 $('.render-idea').on('click', '.delete-button', function(){
