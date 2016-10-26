@@ -51,26 +51,28 @@ $('.save-button').on('click', function(){
   $bodyInput.val('');
 });
 
-$(document).ready(getStorage())
+$(document).ready(getStorageAndDisplay())
 
-function getStorage() {
- var ideaArray = JSON.parse(localStorage.getItem('ideas'))
- if (ideaArray){
-   for (var i = 0; i < ideaArray.length; i++){
-     createIdea(ideaArray[i]);}
-     }
-   }
-
-$('.render-idea').on('click', '.delete-button', function(){
-
+function getStorageAndDisplay() {
   var ideaArray = JSON.parse(localStorage.getItem('ideas'))
   if (ideaArray){
     for (var i = 0; i < ideaArray.length; i++){
-      ideaArray.splice(i,1)
-
+      createIdea(ideaArray[i]);
     }
   }
-  $(this).parent('li').remove();
+}
+
+$('.render-idea').on('click', '.delete-button', function(){
+
+  var ideaID = this.closest('li').id;
+  var ideaArray = JSON.parse(localStorage.getItem('ideas'));
+  for (var i = 0; i < ideaArray.length; i++){
+    if (ideaID == ideaArray[i].id){
+    ideaArray.splice(i,1);
+  }
+    localStorage.setItem('ideas', JSON.stringify(ideaArray));
+    $(this).parent('li').remove();
+  }
 });
 
 $('.render-idea').on('click', '.upvote', function(){
