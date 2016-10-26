@@ -62,8 +62,15 @@ function getStorage() {
    }
 
 $('.render-idea').on('click', '.delete-button', function(){
+
+  var ideaArray = JSON.parse(localStorage.getItem('ideas'))
+  if (ideaArray){
+    for (var i = 0; i < ideaArray.length; i++){
+      ideaArray.splice(i,1)
+
+    }
+  }
   $(this).parent('li').remove();
-  
 });
 
 $('.render-idea').on('click', '.upvote', function(){
@@ -75,6 +82,7 @@ $('.render-idea').on('click', '.upvote', function(){
     return $quality.text('quality: genius');
   }
 });
+
 $('.render-idea').on('click', '.downvote', function(){
   var $quality = $(this).closest('.idea-box').find('.quality');
   switch($quality.text()){
