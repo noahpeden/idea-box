@@ -1,0 +1,37 @@
+header {
+  background-color: #E5F3F2;
+  height: 200px;
+  text-align: center;
+  font-size: 50px;
+}
+
+#idea {
+  color: #00A79D;
+}
+
+#box {
+  color: #6D6E71;
+}
+
+.title-input, .body-input, .save-button {
+  display: block;
+  margin: auto;
+  height: 30px;
+  width: 350px;
+}
+
+.save-button {
+  color: #FFF;
+  background: #00A79D;
+  border-color: transparent;
+
+}
+
+.idea-area {
+  text-align: center;
+}
+
+.search {
+  height: 30px;
+  width: 350px;
+}
