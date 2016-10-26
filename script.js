@@ -6,7 +6,7 @@ function createIdea(idea) {
     `<li class ='idea-box' id=${idea.id}>
         <h2 class='title-result' contenteditable>${idea.title}</h2>
         <p class='body-result' contenteditable>${idea.body}</p>
-        <p class='quality'>quality: ${idea.quality}</p>
+        <span display='inline'>quality: <p class='quality'>${idea.quality}</p></span>
         <button class='delete-button'>delete
         </button>
         <button class='upvote'>Up</button>
@@ -42,10 +42,8 @@ Idea.prototype.storeIdea = function(){
 $('.save-button').on('click', function(){
   var title = $titleInput.val();
   var body = $bodyInput.val();
-
   var newIdea = new Idea(title, body);
   newIdea.storeIdea()
-// display the new idea on the page
   createIdea(newIdea);
   $titleInput.val('');
   $bodyInput.val('');
@@ -63,7 +61,6 @@ function getStorageAndDisplay() {
 }
 
 $('.render-idea').on('click', '.delete-button', function(){
-
   var ideaID = this.closest('li').id;
   var ideaArray = JSON.parse(localStorage.getItem('ideas'));
   for (var i = 0; i < ideaArray.length; i++){
@@ -75,15 +72,62 @@ $('.render-idea').on('click', '.delete-button', function(){
   }
 });
 
-$('.render-idea').on('click', '.upvote', function(){
+$('.render-idea').on('click', '.upvote, .downvote', function(){
   var $quality = $(this).closest('.idea-box').find('.quality');
-  switch($quality.text()){
-  case 'quality: swill':
-     return $quality.text('quality: plausible');
-  case 'quality: plausible':
-    return $quality.text('quality: genius');
+  var ideaID = this.closest('li').id;
+  var title = $(this).closest('li').find('.title-result').text();
+  var body = $(this).closest('li').find('.body-result').text();
+  var tempObject = new Idea(title, body);
+  tempObject.id = ideaID;
+  var newQuality;
+  if ($(this).attr("class") === "upvote") {
+    newQuality = upVoteQuality($quality.text());
+  } else {
+    newQuality = downVoteQuality($quality.text());
   }
+  $(this).closest('li').find('.quality').text(newQuality)
+  tempObject.quality = newQuality;
+  updateStorage(ideaID, tempObject);
 });
+
+function updateStorage(id, object){
+  var ideaArray = getIdeasFromLocalStorage()
+  for (var i=0; i<ideaArray.length; i++){
+    if (id == ideaArray[i].id){
+      ideaArray[i] = object
+    }
+  }
+  localStorage.setItem('ideas', JSON.stringify(ideaArray))
+}
+
+$('.render-idea').on('focus', '.title-result, .body-result', function(){
+  //want title and body to be editable
+  // we want edited title and body to be updated in storage
+
+  // when we click out of fields or press Enter/Return, we want it to save in localStorage
+}
+
+function upVoteQuality(quality) {
+  switch(quality){
+  case 'swill':
+     return 'plausible';
+  case 'plausible':
+    return 'genius';
+  default:
+    return 'genius';
+  }
+};
+
+function downVoteQuality(quality) {
+  switch(quality){
+    case 'genius':
+      return 'plausible';
+    case 'plausible':
+      return 'swill';
+    default:
+      return 'swill';
+  }
+}
 
 $('.render-idea').on('click', '.downvote', function(){
   var $quality = $(this).closest('.idea-box').find('.quality');
@@ -96,10 +140,14 @@ $('.render-idea').on('click', '.downvote', function(){
 });
 
   // edit ideas from localStorage
-  $(".render-idea").on("focus", ".title-input, .body-input", function(){
-    var newTitle = $(idea.title)
-    if($('li').blur()){
-    localStorage['idea.title'] || 'title-result';
-    }
-})
-  // store edited ideas
+//   $(".idea-box").on("focus", ".title-result, .body-result", function(e){
+//     e.preventDefault()
+//     if (e.keycode == 13 || e.blur === 'focusout') {
+//       debugger;
+//     }
+//     var newTitle = $(idea.title)
+//     if($('li').blur()){
+//     localStorage['idea.title'] || 'title-result';
+//     }
+// })
+//   // store edited ideas
