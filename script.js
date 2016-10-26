@@ -54,17 +54,16 @@ $('.save-button').on('click', function(){
 $(document).ready(getStorage())
 
 function getStorage() {
-  var ideaArray = JSON.parse(localStorage.getItem('ideas'))
-  if (ideaArray){
-    for (var i = 0; i < ideaArray.length; i++){
-      var idea = ideaArray[i]
-      createIdea(idea.title, idea.body, idea.id, idea.quality);}
-      }
-    }
-
+ var ideaArray = JSON.parse(localStorage.getItem('ideas'))
+ if (ideaArray){
+   for (var i = 0; i < ideaArray.length; i++){
+     createIdea(ideaArray[i]);}
+     }
+   }
 
 $('.render-idea').on('click', '.delete-button', function(){
   $(this).parent('li').remove();
+  
 });
 
 $('.render-idea').on('click', '.upvote', function(){
