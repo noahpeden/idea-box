@@ -1,37 +1,48 @@
 header {
-  background-color: #E5F3F2;
-  height: 200px;
-  text-align: center;
-  font-size: 50px;
+ background-color: #E5F3F2 ;
+ height: 300px;
+ text-align: center;
+ font-size: 50px;
+ font-weight: bold;
+ position: relative;
 }
 
 #idea {
-  color: #00A79D;
+ color: #00A79D ;
 }
 
 #box {
-  color: #6D6E71;
+ color: #6D6E71 ;
 }
 
-.title-input, .body-input, .save-button {
-  display: block;
-  margin: auto;
-  height: 30px;
-  width: 350px;
+.title-input, .body-input, .save-button, .search {
+ display: block;
+ margin: 20px auto 20px auto;
+ height: 30px;
+ width: 50%;
+}
+
+.title-input, .body-input, .search {
+ border: solid;
+ border-color: #d3d3d3 ;
 }
 
 .save-button {
-  color: #FFF;
-  background: #00A79D;
-  border-color: transparent;
-
+ color: #FFF;
+ background: #00A79D ;
+ border-color: transparent;
+ text-align: center;
 }
 
-.idea-area {
-  text-align: center;
+.save-button:hover {
+ background: #045E55 ;
 }
 
-.search {
-  height: 30px;
-  width: 350px;
+.idea-box {
+ margin-left: 305px;
+}
+
+.title-result {
+ font-size: 30px;
+ color: #6D6E71 ;
 }

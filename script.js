@@ -4,8 +4,8 @@ var $bodyInput = $('.body-input')
 function createIdea(idea) {
   $('.render-idea').prepend(
     `<li class ='idea-box' id=${idea.id}>
-        <h2 class='title-result'>${idea.title}</h2>
-        <p class='body-result'>${idea.body}</p>
+        <h2 class='title-result' contenteditable>${idea.title}</h2>
+        <p class='body-result' contenteditable>${idea.body}</p>
         <p class='quality'>quality: ${idea.quality}</p>
         <button class='delete-button'>delete
         </button>
@@ -94,3 +94,12 @@ $('.render-idea').on('click', '.downvote', function(){
     return $quality.text('quality: swill');
   }
 });
+
+  // edit ideas from localStorage
+  $(".render-idea").on("focus", ".title-input, .body-input", function(){
+    var newTitle = $(idea.title)
+    if($('li').blur()){
+    localStorage['idea.title'] || 'title-result';
+    }
+})
+  // store edited ideas
