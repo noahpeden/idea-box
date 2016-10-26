@@ -51,6 +51,18 @@ $('.save-button').on('click', function(){
   $bodyInput.val('');
 });
 
+$(document).ready(getStorage())
+
+function getStorage() {
+  var ideaArray = JSON.parse(localStorage.getItem('ideas'))
+  if (ideaArray){
+    for (var i = 0; i < ideaArray.length; i++){
+      var idea = ideaArray[i]
+      createIdea(idea.title, idea.body, idea.id, idea.quality);}
+      }
+    }
+
+
 $('.render-idea').on('click', '.delete-button', function(){
   $(this).parent('li').remove();
 });
