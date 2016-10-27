@@ -60,7 +60,7 @@ function upVote(quality){
       return 'genius';
     default:
       return 'genius';
-    }
+    };
 };
 
 function downVote(quality){
@@ -71,13 +71,29 @@ function downVote(quality){
       return 'swill';
     default:
       return 'swill';
-  }
-}
+  };
+};
 
 function buttonSort(upOrDown, quality){
   if (upOrDown === 'upvote'){
     return upVote(quality);
   } else {
     return downVote(quality);
-  }
-}
+  };
+};
+
+$('.render-idea').on('focus', '.body-result, .title-result', function(){
+  var idNumber = $(this).closest('li').attr('id');
+  $(this).on('keypress', function(event){
+    if(event.keyCode === 13){
+      event.preventDefault();
+      $(this).blur();
+    }
+  })
+  $(this).on('blur', function(){
+    var object = JSON.parse(localStorage.getItem(idNumber));
+    object.title = $(this).closest('li').find('.title-result').text();
+    object.body = $(this).closest('li').find('.body-result').text();
+    localStorage.setItem(idNumber, JSON.stringify(object));
+  })
+});
