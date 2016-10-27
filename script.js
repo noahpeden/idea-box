@@ -99,7 +99,7 @@ $('.render-idea').on('focus', '.body-result, .title-result', function(){
   })
 });
 
-$('.title-input, .body-input').keyup(function() {
+$('.title-input, .body-input').keyup( function(){
   var titleInput = $('.title-input').val();
   var bodyInput = $('.body-input').val();
   var saveButton = $('.save-button');
@@ -113,7 +113,7 @@ $('.title-input, .body-input').keyup(function() {
 
 $('.search').keyup(function() {
   event.preventDefault();
-  var searchFilter = $(this).val();
+  var searchFilter = $(this).val().toLowerCase();
   var uncorrectFilteredIdeas = $( "li:not(:contains(" + searchFilter + "))" );
   var filteredIdeas = $("li:contains(" + searchFilter + ")"
   );
