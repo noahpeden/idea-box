@@ -1,12 +1,17 @@
-var $titleInput = $('.title-input')
-var $bodyInput = $('.body-input')
+$(document).ready(function (){
+  for (var i=0; i<localStorage.length; i++){
+    var object = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    createIdea(object);
+  }
+});
+
 
 function createIdea(idea) {
   $('.render-idea').prepend(
     `<li class ='idea-box' id=${idea.id}>
-        <h2 class='title-result'>${idea.title}</h2>
-        <p class='body-result'>${idea.body}</p>
-        <p class='quality'>quality: ${idea.quality}</p>
+        <h2 class='title-result' contenteditable>${idea.title}</h2>
+        <p class='body-result' contenteditable>${idea.body}</p>
+        <span display='inline'>quality: <p class='quality'>${idea.quality}</p></span>
         <button class='delete-button'>delete
         </button>
         <button class='upvote'>Up</button>
@@ -21,76 +26,97 @@ function Idea(title, body){
   this.quality = 'swill'
 }
 
-function getIdeasFromLocalStorage(){
-  var ideaArray = JSON.parse(localStorage.getItem('ideas'))
-  if (ideaArray === undefined || ideaArray === null) {
-    ideaArray = []
-    localStorage.setItem('ideas', JSON.stringify(ideaArray))
-  }
-  return ideaArray;
-}
-
-Idea.prototype.storeIdea = function(){
-  // get all ideas from local storage
-  var allIdeas = getIdeasFromLocalStorage()
-  // add new idea to ideas array
-  allIdeas.push(this)
-  // then set array of ideas to local storage
-  localStorage.setItem('ideas', JSON.stringify(allIdeas))
-}
-
 $('.save-button').on('click', function(){
-  var title = $titleInput.val();
-  var body = $bodyInput.val();
-
-  var newIdea = new Idea(title, body);
-  newIdea.storeIdea()
-// display the new idea on the page
-  createIdea(newIdea);
-  $titleInput.val('');
-  $bodyInput.val('');
+  var title = $('.title-input').val();
+  var body = $('.body-input').val();
+  var idea = new Idea(title, body);
+  createIdea(idea);
+  localStorage.setItem(idea.id, JSON.stringify(idea));
 });
-
-$(document).ready(getStorageAndDisplay())
-
-function getStorageAndDisplay() {
-  var ideaArray = JSON.parse(localStorage.getItem('ideas'))
-  if (ideaArray){
-    for (var i = 0; i < ideaArray.length; i++){
-      createIdea(ideaArray[i]);
-    }
-  }
-}
 
 $('.render-idea').on('click', '.delete-button', function(){
-
-  var ideaID = this.closest('li').id;
-  var ideaArray = JSON.parse(localStorage.getItem('ideas'));
-  for (var i = 0; i < ideaArray.length; i++){
-    if (ideaID == ideaArray[i].id){
-    ideaArray.splice(i,1);
-  }
-    localStorage.setItem('ideas', JSON.stringify(ideaArray));
-    $(this).parent('li').remove();
-  }
+  var idNumber = $(this).closest('li').attr('id');
+  localStorage.removeItem(idNumber);
+  $(this).closest('li').remove();
 });
 
-$('.render-idea').on('click', '.upvote', function(){
-  var $quality = $(this).closest('.idea-box').find('.quality');
-  switch($quality.text()){
-  case 'quality: swill':
-     return $quality.text('quality: plausible');
-  case 'quality: plausible':
-    return $quality.text('quality: genius');
-  }
+$('.render-idea').on('click', '.upvote, .downvote', function(){
+  var parentSelector = $(this).closest('li');
+  var idNumber = parentSelector.attr('id');
+  var quality = parentSelector.find('.quality').text();
+  var upOrDown = $(this).attr('class');
+  var newQuality = buttonSort(upOrDown, quality);
+  parentSelector.find('.quality').text(newQuality);
+  var ideaBox = JSON.parse(localStorage.getItem(idNumber));
+  ideaBox.quality = newQuality;
+  localStorage.setItem(idNumber, JSON.stringify(ideaBox));
 });
 
-$('.render-idea').on('click', '.downvote', function(){
-  var $quality = $(this).closest('.idea-box').find('.quality');
-  switch($quality.text()){
-  case 'quality: genius':
-     return $quality.text('quality: plausible');
-  case 'quality: plausible':
-    return $quality.text('quality: swill');
+function upVote(quality){
+  switch(quality){
+    case 'swill':
+      return 'plausible';
+    case 'plausible':
+      return 'genius';
+    default:
+      return 'genius';
+    };
+};
+
+function downVote(quality){
+  switch(quality){
+    case 'genius':
+      return 'plausible';
+    case 'plausible':
+      return 'swill';
+    default:
+      return 'swill';
+  };
+};
+
+function buttonSort(upOrDown, quality){
+  if (upOrDown === 'upvote'){
+    return upVote(quality);
+  } else {
+    return downVote(quality);
+  };
+};
+
+$('.render-idea').on('focus', '.body-result, .title-result', function(){
+  var idNumber = $(this).closest('li').attr('id');
+  $(this).on('keypress', function(event){
+    if(event.keyCode === 13){
+      event.preventDefault();
+      $(this).blur();
+      return false;
+    }
+  })
+  $(this).on('blur', function(){
+    var object = JSON.parse(localStorage.getItem(idNumber));
+    object.title = $(this).closest('li').find('.title-result').text();
+    object.body = $(this).closest('li').find('.body-result').text();
+    localStorage.setItem(idNumber, JSON.stringify(object));
+  })
+});
+
+$('.title-input, .body-input').keyup( function(){
+  var titleInput = $('.title-input').val();
+  var bodyInput = $('.body-input').val();
+  var saveButton = $('.save-button');
+  if (titleInput != '' && bodyInput != ''){
+    saveButton.attr('disabled', false);
+  } else {
+    saveButton.attr('disabled', true);
   }
+})
+
+
+$('.search').keyup(function() {
+  event.preventDefault();
+  var searchFilter = $(this).val().toLowerCase();
+  var uncorrectFilteredIdeas = $( "li:not(:contains(" + searchFilter + "))" );
+  var filteredIdeas = $("li:contains(" + searchFilter + ")"
+  );
+  filteredIdeas.show();
+  uncorrectFilteredIdeas.hide();
 });
