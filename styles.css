@@ -126,3 +126,11 @@ input, button {
 .delete-button:hover {
   background: url('images/delete-hover.svg') no-repeat;
 }
+
+@media only screen and (max-width: 500px) {
+
+ .input-area {
+   height: 50vh;
+   width: 100%;
+   margin: auto;
+ }

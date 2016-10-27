@@ -99,17 +99,24 @@ $('.render-idea').on('focus', '.body-result, .title-result', function(){
  })
 });
 
-$('.title-input, .body-input').keyup( function(){
- var titleInput = $('.title-input').val();
- var bodyInput = $('.body-input').val();
- var saveButton = $('.save-button');
- if (titleInput != '' && bodyInput != ''){
-   saveButton.attr('disabled', false);
- } else {
-   saveButton.attr('disabled', true);
- }
+$('.save-button').on('click', function(){
+  disableButton();
 })
 
+$('.title-input, .body-input').keyup(function() {
+  disableButton();
+})
+
+function disableButton() {
+  var titleInput = $('.title-input').val();
+  var bodyInput = $('.body-input').val();
+  var saveButton = $('.save-button');
+  if (titleInput && bodyInput){
+    saveButton.attr('disabled', false);
+  } else {
+    saveButton.attr('disabled', true);
+  }
+}
 
 $('.search').keyup(function() {
  event.preventDefault();
