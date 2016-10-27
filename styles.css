@@ -1,19 +1,27 @@
 header {
- background-color: #E5F3F2 ;
+ background-color: #E5F3F2;
  height: 300px;
  text-align: center;
  font-size: 50px;
- font-weight: bold;
  position: relative;
 }
 
+#idea, #box {
+  font-family: Roboto Slab;
+}
+
 #idea {
- color: #00A79D ;
+ color: #00A79D;
 }
 
 #box {
- color: #6D6E71 ;
+ color: #6D6E71;
 }
+
+input, button {
+  outline: none;
+}
+
 
 .title-input, .body-input, .save-button, .search {
  display: block;
@@ -23,26 +31,98 @@ header {
 }
 
 .title-input, .body-input, .search {
- border: solid;
- border-color: #d3d3d3 ;
+ border: solid .5px;
+ border-color: #d3d3d3;
 }
 
 .save-button {
  color: #FFF;
- background: #00A79D ;
+ background: #00A79D;
  border-color: transparent;
  text-align: center;
 }
 
 .save-button:hover {
- background: #045E55 ;
+ background: #045E55;
+}
+
+.save-button:disabled {
+  background: lightgrey;
 }
 
 .idea-box {
- margin-left: 305px;
+ position: relative;
+ margin-left: 25%;
+ margin-right: 25%;
+ padding-top: 20px;
+ padding-bottom: 15px;
+ border-bottom: solid;
+ border-color: #d1d3d4;
+ text-align: left;
+}
+
+.title-result, .body-result, .quality {
+  padding-bottom: 10px;
+}
+
+.quality-text {
+  color: #6d6e71;
 }
 
 .title-result {
+ font-family: Roboto Slab;
+ font-weight: 700;
  font-size: 30px;
- color: #6D6E71 ;
+ color: #6D6E71;
+}
+
+.body-result {
+  font-family: open sans;
+  font-weight: 400;
+  font size: 30px;
+  color: #939598;
+}
+
+.upvote, .downvote, .delete-button  {
+  background-color: transparent;
+  border-color: transparent;
+  height: 30px;
+  width: 30px;
+}
+
+.upvote:hover, .downvote:hover, .delete-button:hover {
+  background-color: transparent;
+  border-color: transparent;
+  height: 30px;
+  width: 30px;
+}
+
+.upvote {
+  background: url('images/upvote.svg') no-repeat;
+  height: 30px;
+  width: 30px;
+}
+
+.upvote:hover {
+  background: url('images/upvote-hover.svg') no-repeat;
+  height: 30px;
+  width: 30px;
+}
+
+.downvote {
+  background: url('images/downvote.svg') no-repeat;
+}
+
+.downvote:hover {
+  background: url('images/downvote-hover.svg') no-repeat;
+}
+
+.delete-button {
+  position: absolute;
+  right: 0;
+  background: url('images/delete.svg') no-repeat;
+}
+
+.delete-button:hover {
+  background: url('images/delete-hover.svg') no-repeat;
 }
