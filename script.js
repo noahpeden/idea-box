@@ -88,6 +88,7 @@ $('.render-idea').on('focus', '.body-result, .title-result', function(){
     if(event.keyCode === 13){
       event.preventDefault();
       $(this).blur();
+      return false;
     }
   })
   $(this).on('blur', function(){
@@ -96,4 +97,26 @@ $('.render-idea').on('focus', '.body-result, .title-result', function(){
     object.body = $(this).closest('li').find('.body-result').text();
     localStorage.setItem(idNumber, JSON.stringify(object));
   })
+});
+
+$('.title-input, .body-input').keyup(function() {
+  var titleInput = $('.title-input').val();
+  var bodyInput = $('.body-input').val();
+  var saveButton = $('.save-button');
+  if (titleInput != '' && bodyInput != ''){
+    saveButton.attr('disabled', false);
+  } else {
+    saveButton.attr('disabled', true);
+  }
+})
+
+
+$('.search').keyup(function() {
+  event.preventDefault();
+  var searchFilter = $(this).val();
+  var uncorrectFilteredIdeas = $( "li:not(:contains(" + searchFilter + "))" );
+  var filteredIdeas = $("li:contains(" + searchFilter + ")"
+  );
+  filteredIdeas.show();
+  uncorrectFilteredIdeas.hide();
 });
