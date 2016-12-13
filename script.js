@@ -1,3 +1,10 @@
+var $titleInputVal = $('.title-input').val();
+var $bodyInputVal = $('.body-input').val();
+var $renderIdea = $('.render-idea');
+var $saveBtn = $('.save-button');
+var $search = $('.search')
+
+
 $(document).ready(function (){
  for (var i=0; i<localStorage.length; i++){
    var object = JSON.parse(localStorage.getItem(localStorage.key(i)));
@@ -24,9 +31,9 @@ function Idea(title, body){
  this.quality = 'swill'
 }
 
-$('.save-button').on('click', function(){
- var title = $('.title-input').val();
- var body = $('.body-input').val();
+$saveBtn.on('click', function(){
+ var title = $titleInputVal;
+ var body = $bodyInputVal;
  var idea = new Idea(title, body);
  createIdea(idea);
  localStorage.setItem(idea.id, JSON.stringify(idea));
@@ -34,13 +41,13 @@ $('.save-button').on('click', function(){
  $('.body-input').val('');
 });
 
-$('.render-idea').on('click', '.delete-button', function(){
+$renderIdea.on('click', '.delete-button', function(){
  var idNumber = $(this).closest('li').attr('id');
  localStorage.removeItem(idNumber);
  $(this).closest('li').remove();
 });
 
-$('.render-idea').on('click', '.upvote, .downvote', function(){
+$renderIdea.on('click', '.upvote, .downvote', function(){
  var parentSelector = $(this).closest('li');
  var idNumber = parentSelector.attr('id');
  var quality = parentSelector.find('.quality').text();
@@ -82,15 +89,16 @@ function buttonSort(upOrDown, quality){
  };
 };
 
-$('.render-idea').on('focus', '.body-result, .title-result', function(){
+$renderIdea.on('focus', '.body-result, .title-result', function(){
  var idNumber = $(this).closest('li').attr('id');
- $(this).on('keypress', function(event){
+ $(this).on('keydown', function(event){
    if(event.keyCode === 13){
      event.preventDefault();
      $(this).blur();
      return false;
    }
  })
+
  $(this).on('blur', function(){
    var object = JSON.parse(localStorage.getItem(idNumber));
    object.title = $(this).closest('li').find('.title-result').text();
@@ -99,7 +107,7 @@ $('.render-idea').on('focus', '.body-result, .title-result', function(){
  })
 });
 
-$('.save-button').on('click', function(){
+$saveBtn.on('click', function(){
   disableButton();
 })
 
@@ -118,10 +126,10 @@ function disableButton() {
   }
 }
 
-$('.search').keyup(function() {
+$search.keyup(function() {
  event.preventDefault();
  var searchFilter = $(this).val().toLowerCase();
- var uncorrectFilteredIdeas = $( "li:not(:contains(" + searchFilter + "))" );
+ var uncorrectFilteredIdeas = $("li:not(:contains(" + searchFilter + "))" );
  var filteredIdeas = $("li:contains(" + searchFilter + ")"
  );
  filteredIdeas.show();
