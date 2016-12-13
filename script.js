@@ -1,7 +1,7 @@
 $(document).ready(function (){
  for (var i=0; i<localStorage.length; i++){
-   var object = JSON.parse(localStorage.getItem(localStorage.key(i)));
-   createIdea(object);
+   var idea = getIdea(localStorage.key(i));
+   createIdea(idea);
  }
 });
 
@@ -20,8 +20,8 @@ function createIdea(idea) {
 function Idea(title, body){
  this.title = title;
  this.body = body;
- this.id = Date.now()
- this.quality = 'swill'
+ this.id = Date.now();
+ this.quality = 'swill';
 }
 
 $('.save-button').on('click', function(){
@@ -29,7 +29,7 @@ $('.save-button').on('click', function(){
  var body = $('.body-input').val();
  var idea = new Idea(title, body);
  createIdea(idea);
- localStorage.setItem(idea.id, JSON.stringify(idea));
+ storeIdea(idea.id, idea);
  $('.title-input').val('');
  $('.body-input').val('');
 });
@@ -47,9 +47,9 @@ $('.render-idea').on('click', '.upvote, .downvote', function(){
  var upOrDown = $(this).attr('class');
  var newQuality = buttonSort(upOrDown, quality);
  parentSelector.find('.quality').text(newQuality);
- var ideaBox = JSON.parse(localStorage.getItem(idNumber));
- ideaBox.quality = newQuality;
- localStorage.setItem(idNumber, JSON.stringify(ideaBox));
+ var idea = getIdea(idNumber);
+ idea.quality = newQuality;
+ storeIdea(idNumber, idea);
 });
 
 function upVote(quality){
@@ -92,10 +92,10 @@ $('.render-idea').on('focus', '.body-result, .title-result', function(){
    }
  })
  $(this).on('blur', function(){
-   var object = JSON.parse(localStorage.getItem(idNumber));
-   object.title = $(this).closest('li').find('.title-result').text();
-   object.body = $(this).closest('li').find('.body-result').text();
-   localStorage.setItem(idNumber, JSON.stringify(object));
+   var idea = getIdea(idNumber);
+   idea.title = $(this).closest('li').find('.title-result').text();
+   idea.body = $(this).closest('li').find('.body-result').text();
+   storeIdea(idNumber, idea);
  })
 });
 
@@ -122,8 +122,17 @@ $('.search').keyup(function() {
  event.preventDefault();
  var searchFilter = $(this).val().toLowerCase();
  var uncorrectFilteredIdeas = $( "li:not(:contains(" + searchFilter + "))" );
- var filteredIdeas = $("li:contains(" + searchFilter + ")"
- );
+ var filteredIdeas = $("li:contains(" + searchFilter + ")");
  filteredIdeas.show();
  uncorrectFilteredIdeas.hide();
 });
+
+function storeIdea(key, object) {
+   var string = JSON.stringify(object);
+   localStorage.setItem(key, string);
+}
+
+function getIdea(key) {
+  var string = localStorage.getItem(key);
+  return JSON.parse(string);
+}
