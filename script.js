@@ -20,8 +20,8 @@ function createIdea(idea) {
 function Idea(title, body){
  this.title = title;
  this.body = body;
- this.id = Date.now()
- this.quality = 'swill'
+ this.id = Date.now();
+ this.quality = 'swill';
 }
 
 $('.save-button').on('click', function(){
@@ -122,8 +122,7 @@ $('.search').keyup(function() {
  event.preventDefault();
  var searchFilter = $(this).val().toLowerCase();
  var uncorrectFilteredIdeas = $( "li:not(:contains(" + searchFilter + "))" );
- var filteredIdeas = $("li:contains(" + searchFilter + ")"
- );
+ var filteredIdeas = $("li:contains(" + searchFilter + ")");
  filteredIdeas.show();
  uncorrectFilteredIdeas.hide();
 });
